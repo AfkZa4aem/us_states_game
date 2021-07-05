@@ -27,7 +27,9 @@ while game_is_on:
     if guessed_count != 0:
         title = f"{guessed_count}/50 States Correct"
     answer_state = (screen.textinput(title=title, prompt="What's the name of State?")).title()
-    if answer_state in state_list:
+    if answer_state in guessed_states["State"]:
+        pass
+    elif answer_state in state_list:
         guessed_count += 1
         state = data[data.state == answer_state]
         x_cor = int(state.x)
