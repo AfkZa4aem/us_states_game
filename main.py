@@ -16,33 +16,33 @@ turtle.shape(image)
 data = pandas.read_csv("./50_states.csv")
 title = "Guess the State"
 state_list = data.state.tolist()
-guessed_count = 0
-guessed_states = {
-    "State": []
-}
+guessed_states = []
 
 game_is_on = True
 
-while game_is_on:
-    if guessed_count != 0:
-        title = f"{guessed_count}/50 States Correct"
+while len(guessed_states) < 50:
+    if len(guessed_states) != 0:
+        title = f"{len(guessed_states)}/50 States Correct"
     answer_state = (screen.textinput(title=title, prompt="What's the name of State?")).title()
-    if answer_state in guessed_states["State"]:
+    if answer_state in guessed_states:
         pass
     elif answer_state in state_list:
-        guessed_count += 1
         state = data[data.state == answer_state]
         x_cor = int(state.x)
         y_cor = int(state.y)
         new_state = PrintName((x_cor, y_cor), answer_state)
         new_state.show_name()
-        guessed_states["State"].append(answer_state)
-        states_data = pandas.DataFrame(guessed_states)
-        states_data.to_csv("./guessed_states.csv")
-    if guessed_count == 50:
-        game_is_on = False
+        guessed_states.append(answer_state)
+    if len(guessed_states) >= 50 or answer_state == "Exit":
+        not_guessed_states = []
+        for state in state_list:
+            if state not in guessed_states:
+                not_guessed_states.append(state)
+        states_data = pandas.DataFrame(not_guessed_states)
+        states_data.to_csv("./states_to_learn.csv")
+        break
 
 
-turtle.mainloop()
+# turtle.mainloop()
 
 # screen.exitonclick()
